@@ -25,11 +25,11 @@ public class Program {
 				ChessPiece capturedPiece = match.performChessMove(source,target);
 			}
 			catch(ChessException e) {
-				e.getMessage();
+				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
 			catch(InputMismatchException e) {
-				e.getMessage();
+				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
 		}
