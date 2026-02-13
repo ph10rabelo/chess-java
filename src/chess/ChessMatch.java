@@ -1,6 +1,7 @@
 package chess;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import boardgame.Board;
 import boardgame.Piece;
@@ -12,9 +13,10 @@ public class ChessMatch {
 	private Board board;
 	private int turn;
 	private Color currentPlayer;
+	private boolean check;
 	
-	private List<ChessPiece> piecesOnTheBoard = new ArrayList<>();
-	private List<ChessPiece> capturedPieces = new ArrayList<>();
+	private List<Piece> piecesOnTheBoard = new ArrayList<>();
+	private List<Piece> capturedPieces = new ArrayList<>();
 	
 	public ChessMatch(){
 		turn = 1;
@@ -25,6 +27,20 @@ public class ChessMatch {
 	
 	public int getTurn() {
 		return turn;
+	}
+	
+	private Color oponnent(Color color) {
+		return (color == Color.WHITE)?Color.BLACK: Color.WHITE;
+	}
+	
+	private ChessPiece king(Color color) {
+		List<Piece> list = piecesOnTheBoard.stream().filter(x-> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+		for (Piece p:list) {
+			if(p instanceof King) {
+				return (ChessPiece)p;
+			}
+		}
+		throw new IllegalStateException("there is no "+color+" king on the board");
 	}
 	
 	public Color getCurrentPlayer() {
@@ -53,10 +69,6 @@ public class ChessMatch {
 		validateSourcePosition(source);
 		validateTargetPosition(source,target);
 		Piece capturedPiece = makeMove(source,target);
-		if(capturedPiece != null) {
-			piecesOnTheBoard.remove((ChessPiece)capturedPiece);
-			capturedPieces.add((ChessPiece)capturedPiece);
-		}
 		nextTurn();
 		return (ChessPiece) capturedPiece;
 	}
@@ -65,10 +77,21 @@ public class ChessMatch {
 		Piece capturedPiece = board.removePiece(target);
 		board.placePiece(p, target);
 		if(capturedPiece != null) {
-			piecesOnTheBoard.remove((ChessPiece)capturedPiece);
-			capturedPieces.add((ChessPiece)capturedPiece);
+			piecesOnTheBoard.remove(capturedPiece);
+			capturedPieces.add(capturedPiece);
 		}
 		return capturedPiece;
+	}
+	
+	private void undoMove(Position source, Position target, Piece capturedPiece) {
+		Piece p = board.removePiece(target);
+		board.placePiece(p, source);
+		
+		if(capturedPiece != null) {
+			board.placePiece(capturedPiece, target);
+			capturedPieces.remove(capturedPiece);
+			piecesOnTheBoard.add(capturedPiece);
+		}
 	}
 	
 	private void validateSourcePosition(Position position) {
