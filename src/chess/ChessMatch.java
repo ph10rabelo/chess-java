@@ -137,10 +137,28 @@ public class ChessMatch {
 		p.increaseMoveCount();
 		Piece capturedPiece = board.removePiece(target);
 		board.placePiece(p, target);
-		if(capturedPiece != null) {
+		
+		if (capturedPiece != null) {
 			piecesOnTheBoard.remove(capturedPiece);
 			capturedPieces.add(capturedPiece);
 		}
+		//castling kingside rook
+		if (p instanceof King && target.getColunm()== source.getColunm()+2) {
+			Position sourceT = new Position(source.getRow(),source.getColunm()+3);
+			Position targetT = new Position(source.getRow(),source.getColunm()+1);
+			ChessPiece rook =(ChessPiece)board.removePiece(sourceT);
+			board.placePiece(rook, targetT);
+			rook.increaseMoveCount();
+		}
+		//castling queenside rook
+		if (p instanceof King && target.getColunm()== source.getColunm()-2) {
+			Position sourceT = new Position(source.getRow(),source.getColunm()-4);
+			Position targetT = new Position(source.getRow(),source.getColunm()-1);
+			ChessPiece rook =(ChessPiece)board.removePiece(sourceT);
+			board.placePiece(rook, targetT);
+			rook.increaseMoveCount();
+		}
+		
 		return capturedPiece;
 	}
 	
@@ -153,7 +171,23 @@ public class ChessMatch {
 			board.placePiece(capturedPiece, target);
 			capturedPieces.remove(capturedPiece);
 			piecesOnTheBoard.add(capturedPiece);
-		}
+		}	
+		//castling kingside rook
+				if (p instanceof King && target.getColunm()== source.getColunm()+2) {
+					Position sourceT = new Position(source.getRow(),source.getColunm()+3);
+					Position targetT = new Position(source.getRow(),source.getColunm()+1);
+					ChessPiece rook =(ChessPiece)board.removePiece(targetT);
+					board.placePiece(rook, sourceT);
+					rook.decreaseMoveCount();
+				}
+				//castling queenside rook
+				if (p instanceof King && target.getColunm()== source.getColunm()-2) {
+					Position sourceT = new Position(source.getRow(),source.getColunm()-4);
+					Position targetT = new Position(source.getRow(),source.getColunm()-1);
+					ChessPiece rook =(ChessPiece)board.removePiece(targetT);
+					board.placePiece(rook, sourceT);
+					rook.decreaseMoveCount();
+				}
 	}
 	
 	private void validateSourcePosition(Position position) {
