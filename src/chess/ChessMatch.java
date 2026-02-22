@@ -33,6 +33,11 @@ public class ChessMatch {
 		initialSetup();
 	}
 	
+	public ChessMatch(String fen) {
+		board = new Board(8,8);
+		loadFEN(fen);
+	}
+	
 	public int getTurn() {
 		return turn;
 	}
@@ -45,8 +50,49 @@ public class ChessMatch {
 		return promoted;
 	}
 	
+	public void setPromoted(String s) {
+		replacePromotedPiece(s);
+	}
+	
 	private Color oponnent(Color color) {
 		return (color == Color.WHITE)?Color.BLACK: Color.WHITE;
+	}
+	
+	public void loadFEN(String fen) {
+		clearBoard();
+		
+		String[] parts = fen.split(" ");
+		String boardPart = parts[0];
+		
+		int row =8;
+		int col = 0;
+		
+		for(int i=0; i<boardPart.length();i++) {
+			char c = boardPart.charAt(i);
+			
+			if(c == '/') {
+				row--;
+				col=0;
+			}
+			else if(Character.isDigit(c)){
+				col += Character.getNumericValue(c);
+			}else {
+				Color color = Character.isUpperCase(c)? Color.WHITE: Color.BLACK;
+				
+				String type = String.valueOf(c).toUpperCase();
+				
+				char columnChar = (char) ('a'+col);
+				
+				placeNewPiece(columnChar,row,newPiece(type,color));
+				
+				col++;
+			}	
+		}
+		
+		if (parts.length > 1) {
+	        String turn = parts[1];
+	        this.currentPlayer = turn.equals("w") ? Color.WHITE : Color.BLACK;
+	    }
 	}
 	
 	private ChessPiece king(Color color) {
@@ -165,7 +211,7 @@ public class ChessMatch {
 		if(promoted == null) {
 			throw new IllegalStateException("there is no piece to be promoted");
 		}
-		if(!type.equals("B") && !type.equals("N") && !type.equals("Q") && !type.equals("R")) {
+		if(!type.equalsIgnoreCase("B") && !type.equalsIgnoreCase("N") && !type.equalsIgnoreCase("Q") && !type.equalsIgnoreCase("R")) {
 			return promoted;
 		}
 		Position pos = promoted.getChessPosition().toPosition();
@@ -180,9 +226,9 @@ public class ChessMatch {
 	}
 	
 	private ChessPiece newPiece(String type, Color color) {
-		if (type.equals("B")) return new Bishop(board,color);
-		if (type.equals("N")) return new Knight(board,color);
-		if (type.equals("Q")) return new Queen(board,color);
+		if (type.equalsIgnoreCase("B")) return new Bishop(board,color);
+		if (type.equalsIgnoreCase("N")) return new Knight(board,color);
+		if (type.equalsIgnoreCase("Q")) return new Queen(board,color);
 	    return new Rook(board,color);
 	}
 	
@@ -301,6 +347,21 @@ public class ChessMatch {
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column,row).toPosition());
 		piecesOnTheBoard.add(piece);
+	}
+	
+	private void clearBoard() {
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+	            board.removePiece(new Position(i, j));
+	        }
+	    }
+	    piecesOnTheBoard.clear();
+	    capturedPieces.clear();
+
+	    check = false;
+	    checkMate = false;
+	    promoted = null;
+	    currentPlayer = Color.WHITE; 
 	}
 	
 	private void initialSetup() {

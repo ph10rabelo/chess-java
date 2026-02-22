@@ -7,11 +7,13 @@ public class Puzzle {
 	private String fen;
 	private List<String> themes;
 	private Integer rating;
-	public Puzzle(String id, String fen, List<String> themes, Integer rating) {
+	private List<String> solution;
+	public Puzzle(String id, String fen, List<String> themes, Integer rating, List<String> solution) {
 		this.id = id;
 		this.fen = fen;
 		this.themes = themes;
 		this.rating = rating;
+		this.solution = solution;
 	}
 	public String getId() {
 		return id;
@@ -37,6 +39,10 @@ public class Puzzle {
 	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
-	
-	
+	public List<String> getSolution(){
+		return solution;
+	}
+	public void setSolution(List<String> solution) {
+		this.solution = solution;
+	}
 }
