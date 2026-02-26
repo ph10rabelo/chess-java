@@ -1,13 +1,18 @@
-package chess.puzzle;
+package woodpecker.chess.puzzle;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Puzzle {
 	private String id;
+	@JsonProperty("initialFen")
 	private String fen;
 	private List<String> themes;
 	private Integer rating;
 	private List<String> solution;
+	
+	public Puzzle() {}
+	
 	public Puzzle(String id, String fen, List<String> themes, Integer rating, List<String> solution) {
 		this.id = id;
 		this.fen = fen;

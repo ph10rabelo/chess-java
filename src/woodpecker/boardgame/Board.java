@@ -1,4 +1,4 @@
-package boardgame;
+package woodpecker.boardgame;
 
 public class Board {
 	private int rows;

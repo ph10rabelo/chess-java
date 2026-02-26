@@ -1,6 +1,6 @@
-package chess;
+package woodpecker.chess;
 
-import boardgame.Position;
+import woodpecker.boardgame.Position;
 
 public class ChessPosition {
 	char column;

@@ -1,7 +1,7 @@
-package chess.puzzle;
+package woodpecker.chess.puzzle;
 
-import chess.ChessMatch;
-import chess.ChessPosition;
+import woodpecker.chess.ChessMatch;
+import woodpecker.chess.ChessPosition;
 import java.util.List;
 
 public class PuzzleManager {
@@ -9,10 +9,10 @@ public class PuzzleManager {
 	private Puzzle currentPuzzle;
 	private int moveIndex;
 	
-	public PuzzleManager(Puzzle puzzle) {
+	public PuzzleManager(Puzzle puzzle, ChessMatch match) {
 		this.currentPuzzle = puzzle;
 		this.moveIndex = 0;
-		this.match = new ChessMatch(puzzle.getFen());
+		this.match = match;
 	}
 	
 	public boolean verifyAndExecute(ChessPosition source, ChessPosition target) {
@@ -46,5 +46,9 @@ public class PuzzleManager {
 			match.setPromoted(opmove.substring(4,5));
 		}
 		moveIndex++;
+	}
+	
+	public boolean isResolved() {
+		return moveIndex >= currentPuzzle.getSolution().size();
 	}
 }

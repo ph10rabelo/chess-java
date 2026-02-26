@@ -1,17 +1,17 @@
-package chess;
+package woodpecker.chess;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import boardgame.Board;
-import boardgame.Piece;
-import boardgame.Position;
-import chess.pieces.Bishop;
-import chess.pieces.King;
-import chess.pieces.Knight;
-import chess.pieces.Pawn;
-import chess.pieces.Queen;
-import chess.pieces.Rook;
+import woodpecker.boardgame.Board;
+import woodpecker.boardgame.Piece;
+import woodpecker.boardgame.Position;
+import woodpecker.chess.pieces.Bishop;
+import woodpecker.chess.pieces.King;
+import woodpecker.chess.pieces.Knight;
+import woodpecker.chess.pieces.Pawn;
+import woodpecker.chess.pieces.Queen;
+import woodpecker.chess.pieces.Rook;
 
 public class ChessMatch {
 	private Board board;
@@ -83,7 +83,8 @@ public class ChessMatch {
 				
 				char columnChar = (char) ('a'+col);
 				
-				placeNewPiece(columnChar,row,newPiece(type,color));
+				System.out.println("Criando peça: " + type + " em " + columnChar + row);
+				placeNewPiece(columnChar, row, newPiece(type, color));
 				
 				col++;
 			}	
@@ -181,7 +182,7 @@ public class ChessMatch {
 		
 		//promotion
 		promoted = null;
-		if((movedPiece.getColor()==Color.WHITE && target.getRow()==0)||(movedPiece.getColor()==Color.WHITE && target.getRow()==7)) {
+		if((movedPiece.getColor()==Color.WHITE && target.getRow()==0)||(movedPiece.getColor()==Color.BLACK && target.getRow()==7)) {
 			promoted = (ChessPiece)board.piece(target);
 			promoted = replacePromotedPiece("Q");
 		}
@@ -229,7 +230,10 @@ public class ChessMatch {
 		if (type.equalsIgnoreCase("B")) return new Bishop(board,color);
 		if (type.equalsIgnoreCase("N")) return new Knight(board,color);
 		if (type.equalsIgnoreCase("Q")) return new Queen(board,color);
-	    return new Rook(board,color);
+		if (type.equalsIgnoreCase("R"))return new Rook(board,color);
+		if (type.equalsIgnoreCase("P")) return new Pawn(board, color, this);
+	    if (type.equalsIgnoreCase("K")) return new King(board, color, this);
+	    throw new ChessException("Tipo de peça inválido: " + type);
 	}
 	
 	private Piece makeMove(Position source, Position target) {

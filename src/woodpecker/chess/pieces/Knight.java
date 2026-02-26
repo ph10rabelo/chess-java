@@ -1,9 +1,9 @@
-package chess.pieces;
+package woodpecker.chess.pieces;
 
-import boardgame.Board;
-import boardgame.Position;
-import chess.ChessPiece;
-import chess.Color;
+import woodpecker.boardgame.Board;
+import woodpecker.boardgame.Position;
+import woodpecker.chess.ChessPiece;
+import woodpecker.chess.Color;
 
 public class Knight extends ChessPiece {
 

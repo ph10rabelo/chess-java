@@ -1,4 +1,4 @@
-package boardgame;
+package woodpecker.boardgame;
 
 public abstract class Piece {
 	protected Position position;
