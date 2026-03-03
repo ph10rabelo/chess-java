@@ -48,6 +48,8 @@ public class PuzzleManager {
 		moveIndex++;
 	}
 	
+	
+	
 	public boolean isResolved() {
 		return moveIndex >= currentPuzzle.getSolution().size();
 	}

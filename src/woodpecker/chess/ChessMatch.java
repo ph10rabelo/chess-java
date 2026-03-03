@@ -35,7 +35,6 @@ public class ChessMatch {
 	
 	public ChessMatch(String fen) {
 		board = new Board(8,8);
-		loadFEN(fen);
 	}
 	
 	public int getTurn() {
@@ -56,44 +55,6 @@ public class ChessMatch {
 	
 	private Color oponnent(Color color) {
 		return (color == Color.WHITE)?Color.BLACK: Color.WHITE;
-	}
-	
-	public void loadFEN(String fen) {
-		clearBoard();
-		
-		String[] parts = fen.split(" ");
-		String boardPart = parts[0];
-		
-		int row =8;
-		int col = 0;
-		
-		for(int i=0; i<boardPart.length();i++) {
-			char c = boardPart.charAt(i);
-			
-			if(c == '/') {
-				row--;
-				col=0;
-			}
-			else if(Character.isDigit(c)){
-				col += Character.getNumericValue(c);
-			}else {
-				Color color = Character.isUpperCase(c)? Color.WHITE: Color.BLACK;
-				
-				String type = String.valueOf(c).toUpperCase();
-				
-				char columnChar = (char) ('a'+col);
-				
-				System.out.println("Criando peça: " + type + " em " + columnChar + row);
-				placeNewPiece(columnChar, row, newPiece(type, color));
-				
-				col++;
-			}	
-		}
-		
-		if (parts.length > 1) {
-	        String turn = parts[1];
-	        this.currentPlayer = turn.equals("w") ? Color.WHITE : Color.BLACK;
-	    }
 	}
 	
 	private ChessPiece king(Color color) {

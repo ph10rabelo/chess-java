@@ -24,7 +24,7 @@ public class Program {
 	    List<String> solution = List.of("d7d5", "c4d5", "e6d5");
 	    Puzzle puzzle = new Puzzle(id,fen,themes,rating,solution); 
 
-	    ChessMatch match = new ChessMatch(puzzle.getFen());
+	    ChessMatch match = new ChessMatch(puzzle.getInitialFen());
 	    PuzzleManager manager = new PuzzleManager(puzzle, match);
 	    List<ChessPiece> captured = new ArrayList<>();
 
