@@ -1,17 +1,17 @@
-package chess;
+package woodpecker.chess;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import boardgame.Board;
-import boardgame.Piece;
-import boardgame.Position;
-import chess.pieces.Bishop;
-import chess.pieces.King;
-import chess.pieces.Knight;
-import chess.pieces.Pawn;
-import chess.pieces.Queen;
-import chess.pieces.Rook;
+import woodpecker.boardgame.Board;
+import woodpecker.boardgame.Piece;
+import woodpecker.boardgame.Position;
+import woodpecker.chess.pieces.Bishop;
+import woodpecker.chess.pieces.King;
+import woodpecker.chess.pieces.Knight;
+import woodpecker.chess.pieces.Pawn;
+import woodpecker.chess.pieces.Queen;
+import woodpecker.chess.pieces.Rook;
 
 public class ChessMatch {
 	private Board board;
@@ -33,6 +33,10 @@ public class ChessMatch {
 		initialSetup();
 	}
 	
+	public ChessMatch(String fen) {
+		board = new Board(8,8);
+	}
+	
 	public int getTurn() {
 		return turn;
 	}
@@ -43,6 +47,10 @@ public class ChessMatch {
 	
 	public ChessPiece getPromoted() {
 		return promoted;
+	}
+	
+	public void setPromoted(String s) {
+		replacePromotedPiece(s);
 	}
 	
 	private Color oponnent(Color color) {
@@ -135,7 +143,7 @@ public class ChessMatch {
 		
 		//promotion
 		promoted = null;
-		if((movedPiece.getColor()==Color.WHITE && target.getRow()==0)||(movedPiece.getColor()==Color.WHITE && target.getRow()==7)) {
+		if((movedPiece.getColor()==Color.WHITE && target.getRow()==0)||(movedPiece.getColor()==Color.BLACK && target.getRow()==7)) {
 			promoted = (ChessPiece)board.piece(target);
 			promoted = replacePromotedPiece("Q");
 		}
@@ -165,7 +173,7 @@ public class ChessMatch {
 		if(promoted == null) {
 			throw new IllegalStateException("there is no piece to be promoted");
 		}
-		if(!type.equals("B") && !type.equals("N") && !type.equals("Q") && !type.equals("R")) {
+		if(!type.equalsIgnoreCase("B") && !type.equalsIgnoreCase("N") && !type.equalsIgnoreCase("Q") && !type.equalsIgnoreCase("R")) {
 			return promoted;
 		}
 		Position pos = promoted.getChessPosition().toPosition();
@@ -180,10 +188,13 @@ public class ChessMatch {
 	}
 	
 	private ChessPiece newPiece(String type, Color color) {
-		if (type.equals("B")) return new Bishop(board,color);
-		if (type.equals("N")) return new Knight(board,color);
-		if (type.equals("Q")) return new Queen(board,color);
-	    return new Rook(board,color);
+		if (type.equalsIgnoreCase("B")) return new Bishop(board,color);
+		if (type.equalsIgnoreCase("N")) return new Knight(board,color);
+		if (type.equalsIgnoreCase("Q")) return new Queen(board,color);
+		if (type.equalsIgnoreCase("R"))return new Rook(board,color);
+		if (type.equalsIgnoreCase("P")) return new Pawn(board, color, this);
+	    if (type.equalsIgnoreCase("K")) return new King(board, color, this);
+	    throw new ChessException("Tipo de peça inválido: " + type);
 	}
 	
 	private Piece makeMove(Position source, Position target) {
@@ -301,6 +312,21 @@ public class ChessMatch {
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column,row).toPosition());
 		piecesOnTheBoard.add(piece);
+	}
+	
+	private void clearBoard() {
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+	            board.removePiece(new Position(i, j));
+	        }
+	    }
+	    piecesOnTheBoard.clear();
+	    capturedPieces.clear();
+
+	    check = false;
+	    checkMate = false;
+	    promoted = null;
+	    currentPlayer = Color.WHITE; 
 	}
 	
 	private void initialSetup() {

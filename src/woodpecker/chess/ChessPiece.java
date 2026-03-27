@@ -1,8 +1,8 @@
-package chess;
+package woodpecker.chess;
 
-import boardgame.Board;
-import boardgame.Piece;
-import boardgame.Position;
+import woodpecker.boardgame.Board;
+import woodpecker.boardgame.Piece;
+import woodpecker.boardgame.Position;
 
 public abstract class ChessPiece extends Piece {
 	private Color color;

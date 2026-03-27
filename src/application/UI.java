@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import chess.ChessMatch;
-import chess.ChessPiece;
-import chess.ChessPosition;
-import chess.Color;
+import woodpecker.chess.ChessMatch;
+import woodpecker.chess.ChessPiece;
+import woodpecker.chess.ChessPosition;
+import woodpecker.chess.Color;
+
+
 
 public class UI {
 	// https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println

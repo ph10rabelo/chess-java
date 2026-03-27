@@ -1,22 +1,21 @@
-package chess.pieces;
+package woodpecker.chess.pieces;
 
-import boardgame.Board;
-import boardgame.Position;
-import chess.ChessPiece;
-import chess.Color;
+import woodpecker.boardgame.Board;
+import woodpecker.boardgame.Position;
+import woodpecker.chess.ChessPiece;
+import woodpecker.chess.Color;
 
-public class Rook extends ChessPiece{
+public class Bishop extends ChessPiece {
 
-	public Rook(Board board, Color color) {
+	public Bishop(Board board, Color color) {
 		super(board, color);
-
 	}
-	
+
 	@Override
 	public String toString() {
-		return "R";
+		return "B";
 	}
-
+	
 	@Override
 	public boolean[][] possibleMoves() {
 		boolean[][] mat = new boolean [ getBoard().getRows()][getBoard().getColunms()];
@@ -24,41 +23,37 @@ public class Rook extends ChessPiece{
 		
 		Position p = new Position(0,0);
 		
-		//up
-		p.setValues(position.getRow()-1, position.getColunm());
+		p.setValues(position.getRow()-1, position.getColunm()-1);
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
-			p.setValues(p.getRow()-1, p.getColunm());
+			p.setValues(p.getRow()-1, p.getColunm()-1);
 		}
 		if(getBoard().positionExists(p) && isThereOponnentPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
 		}
 		
-		//down
-		p.setValues(position.getRow()+1, position.getColunm());
+		p.setValues(position.getRow()-1, position.getColunm()+1);
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
-			p.setValues(p.getRow()+1, p.getColunm());
+			p.setValues(p.getRow()-1, p.getColunm()+1);
 		}
 		if(getBoard().positionExists(p) && isThereOponnentPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
 		}
 		
-		//left
-		p.setValues(position.getRow(), position.getColunm()-1);
+		p.setValues(position.getRow()+1, position.getColunm()+1);
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
-			p.setValues(p.getRow(), p.getColunm()-1);
+			p.setValues(p.getRow()+1, p.getColunm()+1);
 		}
 		if(getBoard().positionExists(p) && isThereOponnentPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
 		}
 		
-		//right
-		p.setValues(position.getRow(), position.getColunm()+1);
+		p.setValues(position.getRow()+1, position.getColunm()-1);
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
-			p.setValues(p.getRow(), p.getColunm()+1);
+			p.setValues(p.getRow()+1, p.getColunm()-1);
 		}
 		if(getBoard().positionExists(p) && isThereOponnentPiece(p)) {
 			mat[p.getRow()][p.getColunm()] = true;
@@ -66,4 +61,5 @@ public class Rook extends ChessPiece{
 		
 		return mat;
 	}
+	
 }

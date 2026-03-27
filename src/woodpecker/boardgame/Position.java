@@ -1,4 +1,4 @@
-package boardgame;
+package woodpecker.boardgame;
 
 public class Position {
 	private int row;
